@@ -1,0 +1,37 @@
+## Setup Instructions
+
+### Prerequisites
+- Docker
+- Docker Compose
+
+### Running the Application
+1. Clone the repository.
+2. Navigate to the project directory.
+3. Run `docker-compose up --build` to build and start the application.
+
+### API Endpoints
+Tried to give an Idea How to Handle large data retrieval process.
+
+- **GET /api/v1/store_data**: For fetching data and processing it.
+It will retrive data asynchronously from 5 different pages and each page will be processes parallely (using batch processing) with the help of celery and data will be stored in db and cache as per the need.(localhost url : http://127.0.0.1:8000/api/v1/store_data , )
+
+- **GET /api/v1/get-processed-data**: Retrieves the processed data stored in memory with pagination. (
+
+    localhost url : http://127.0.0.1:8000/api/v1/get-processed-data , 
+    For Different Page : http://127.0.0.1:8000/api/v1/get-processed-data?page=3
+    For Changing More Data in a Single Page : http://127.0.0.1:8000/api/v1/get-processed-data?per_page=20
+    For Different Page and More Data : http://127.0.0.1:8000/api/v1/get-processed-data?page=2&per_page=20
+    
+    )
+
+### CORNJOB 
+For Fetching data every hour automatically it will retrive data asynchronously from 5 different pages and each page will be processes parallely (using batch processing) with the help of celery and data will be stored in db and cache
+<!-- CELERYBEAT_SCHEDULE={
+            'fetch-every-hour': {
+                'task': 'tasks.fetch_and_store_data',
+                'schedule': crontab(minute=0, hour='*'),  # Run every hour
+            }, -->
+
+### Stopping the Application
+- Press `Ctrl+C` to stop the application.
+- Run `docker-compose down` to clean up resources.
